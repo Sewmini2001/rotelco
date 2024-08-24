@@ -1,3 +1,48 @@
+<?php
+// Allow CORS requests from specific origins
+$allowedOrigins = ['https://example.com', 'https://sewmini2001.github.io/rotelco/.com'];
+
+if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowedOrigins)) {
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+}
+
+// Specify allowed methods and headers
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Credentials: true');
+
+// Handle preflight (OPTIONS) request
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header('Access-Control-Max-Age: 86400'); // Cache preflight response for 1 day
+    exit(0);
+}
+
+// Simulate creating a new user
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Example: Assume the user was created successfully and has ID 456
+    $newUserId = 456;
+
+    // Construct the location URL (adjust path as needed)
+    $locationUrl = "/path/to/user/$newUserId";
+
+    // Set the Location header to point to the new user resource
+    header("Location: $locationUrl");
+
+    // Respond with a 201 Created status and a message
+    http_response_code(201);
+    echo json_encode([
+        'message' => 'User created successfully',
+        'id' => $newUserId,
+        'location' => $locationUrl
+    ]);
+
+    exit(0);
+}
+
+// Fallback response
+echo json_encode(['message' => 'CORS secured response']);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
