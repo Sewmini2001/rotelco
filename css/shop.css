@@ -1,0 +1,11 @@
+#product-category{
+	visibility: hidden;
+}
+
+#product-item {
+    display: none;
+}
+
+#product-item.show {
+    display: block;
+}
